@@ -1,0 +1,27 @@
+{
+  "name": "gantha-pdf",
+  "version": "1.0.0",
+  "description": "PDF generation plugin for Gantha ebook builder",
+  "type": "module",
+  "main": "pdf.ts",
+  "author": "Saturngod",
+  "license": "MIT",
+  "keywords": [
+    "gantha",
+    "pdf",
+    "ebook",
+    "markdown"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "marked": "^15.0.4",
+    "puppeteer": "^24.4.0",
+    "highlight.js": "^11.10.0",
+    "mermaid": "^11.4.1"
+  }
+}
