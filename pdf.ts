@@ -129,6 +129,17 @@ function convertPlaceholders(
 ): string {
   if (!template) return '<div style="font-size: 9pt;"></div>';
 
+  const userFont = config.font_family ? `${config.font_family}, ` : "";
+  const fontFamily = `${userFont}'Noto Sans Myanmar', 'Noto Sans SC', 'Noto Sans JP', sans-serif`;
+
+  const style = `
+    <style>
+      :root { font-size: 10pt; }
+      body { margin: 0; padding: 0; }
+      div, span { font-family: ${fontFamily}; }
+    </style>
+  `;
+
   const converted = template
     .replace(/\{title\}/g, config.title || "")
     .replace(/\{author\}/g, config.author || "")
@@ -138,7 +149,7 @@ function convertPlaceholders(
 
   // Wrap in a div with proper padding to align with content
   // Use padding instead of margin for Puppeteer header/footer
-  return `<div style="padding-left: ${marginLeft}mm; padding-right: ${marginRight}mm; width: 100%; box-sizing: border-box;">${converted}</div>`;
+  return `${style}<div style="padding-left: ${marginLeft}mm; padding-right: ${marginRight}mm; width: 100%; box-sizing: border-box; font-family: ${fontFamily};">${converted}</div>`;
 }
 
 // Convert markdown to HTML with professional book styling
@@ -149,9 +160,9 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
   const fontSize = config.font_size || 11;
   const userFont = config.font_family ? `${config.font_family}, ` : "";
   // Include CJK fonts in fallback
-  const fontFamily = `${userFont}Lora, "Noto Sans SC", "Noto Sans JP", Georgia, serif`;
+  const fontFamily = `${userFont} Lora, "Noto Sans SC", "Noto Sans JP", Georgia, serif`;
   const headingFont = "Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"; // Sans-serif for headings
-  const monoFont = `'Fira Code', 'Source Code Pro', 'Courier New', Courier, ${userFont}monospace`;
+  const monoFont = `'Fira Code', 'Source Code Pro', 'Courier New', Courier, ${userFont} monospace`;
   const lineHeight = config.line_height || 1.6;
   const primaryColor = "#2d3436";
   const totalVMargin = (config.margin_top || 30) + (config.margin_bottom || 30);
@@ -162,29 +173,29 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
   if (config.cover) {
     // Full page cover image
     coverPage = `
-      <div class="page cover-page full-bleed">
-        <img src="${config.cover}" class="cover-image-full" />
-      </div>
-    `;
+    < div class="page cover-page full-bleed" >
+      <img src="${config.cover}" class="cover-image-full" />
+        </div>
+          `;
   }
 
   // Unified Title and Copyright Page
   let titlePage = "";
   if (config.title) {
     titlePage = `
-      <div class="page title-page">
-        <div class="title-content">
-          <h1 class="book-title">${config.title}</h1>
+        < div class="page title-page" >
+          <div class="title-content" >
+            <h1 class="book-title" > ${config.title} </h1>
           ${config.subtitle ? `<h2 class="book-subtitle">${config.subtitle}</h2>` : ""}
-          <div class="book-author">${config.author || ""}</div>
-        </div>
+  <div class="book-author" > ${config.author || ""} </div>
+    </div>
 
-        <div class="copyright-footer">
-          <p>&copy; ${new Date().getFullYear()} ${config.author || ""}. All rights reserved.</p>
-          <p>www.saturngod.net</p>
+    < div class="copyright-footer" >
+      <p>& copy; ${new Date().getFullYear()} ${config.author || ""}. All rights reserved.</p>
+        < p > www.saturngod.net </p>
         </div>
-      </div>
-    `;
+        </div>
+          `;
   }
 
   const tocPlaceholder = config.generate_toc
@@ -192,308 +203,309 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
     : "";
 
   return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${config.title || "Book"}</title>
+        < !DOCTYPE html >
+          <html lang="en" >
+            <head>
+            <meta charset="UTF-8" >
+              <title>${config.title || "Book"} </title>
   ${basePath ? `<base href="file://${basePath}/">` : ''}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-  <style>
+  <link rel="preconnect" href = "https://fonts.googleapis.com" >
+    <link rel="preconnect" href = "https://fonts.gstatic.com" crossorigin >
+      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel = "stylesheet" >
+        <style>
     :root {
-      --primary-color: ${primaryColor};
-      --text-color: #1a1a1a;
-      --muted-color: #666;
-      --border-color: #eaeaea;
-      --font-body: ${fontFamily}, 'Noto Sans Myanmar', serif;
-      --font-heading: ${headingFont}, 'Noto Sans Myanmar', sans-serif;
-      --font-mono: ${monoFont};
-    }
+    --primary - color: ${primaryColor};
+    --text - color: #1a1a1a;
+    --muted - color: #666;
+    --border - color: #eaeaea;
+    --font - body: ${fontFamily}, 'Noto Sans Myanmar', serif;
+    --font - heading: ${headingFont}, 'Noto Sans Myanmar', sans - serif;
+    --font - mono: ${monoFont};
+  }
 
-    /*
-      We use Puppeteer's margin options for the main document to allow headers/footers.
-      When preferCSSPageSize is true (enabled by bookmarks), @page rules take precedence.
-      So we RESTORE the margins from config here.
-    */
-    @page {
-      size: ${config.page_size || "A4"} ${config.orientation === "L" ? "landscape" : "portrait"};
-      margin-top: ${config.margin_top || 30}mm;
-      margin-right: ${config.margin_right || 25}mm;
-      margin-bottom: ${config.margin_bottom || 30}mm;
-      margin-left: ${config.margin_left || 30}mm;
-    }
+  /*
+    We use Puppeteer's margin options for the main document to allow headers/footers.
+    When preferCSSPageSize is true (enabled by bookmarks), @page rules take precedence.
+    So we RESTORE the margins from config here.
+  */
+  @page {
+    size: ${config.page_size || "A4"} ${config.orientation === "L" ? "landscape" : "portrait"};
+    margin - top: ${config.margin_top || 30} mm;
+    margin - right: ${config.margin_right || 25} mm;
+    margin - bottom: ${config.margin_bottom || 30} mm;
+    margin - left: ${config.margin_left || 30} mm;
+  }
 
-    /* Named page for Cover to allow full bleed (no margins) */
-    @page cover {
-      margin: 0;
-    }
+  /* Named page for Cover to allow full bleed (no margins) */
+  @page cover {
+    margin: 0;
+  }
 
-    * { box-sizing: border-box; }
+    * { box- sizing: border - box;
+}
 
     body {
-      font-family: var(--font-body);
-      font-size: ${fontSize}pt;
-      line-height: ${lineHeight};
-      color: var(--text-color);
-      margin: 0;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-    }
+  font - family: var(--font - body);
+  font - size: ${fontSize} pt;
+  line - height: ${lineHeight};
+  color: var(--text - color);
+  margin: 0;
+  padding: 0;
+  -webkit - font - smoothing: antialiased;
+}
 
     /* Content wrapper */
     .content {
-      width: 100%;
-    }
+  width: 100 %;
+}
 
     /* Cover Page Styling */
-    .cover-page {
-      page: cover; /* Use the named page style */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100vh;
-      page-break-after: always;
-      overflow: hidden;
-    }
+    .cover - page {
+  page: cover; /* Use the named page style */
+  display: flex;
+  justify - content: center;
+  align - items: center;
+  width: 100 %;
+  height: 100vh;
+  page -break-after: always;
+  overflow: hidden;
+}
 
-    .cover-image-full {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+    .cover - image - full {
+  width: 100 %;
+  height: 100 %;
+  object - fit: contain;
+}
 
     /* Title Page (Combined Title + Copyright) */
-    .title-page {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      text-align: center;
-      height: calc(100vh - ${totalVMargin + 10}mm);
-      page-break-after: always;
-      overflow: hidden;
+    .title - page {
+  display: flex;
+  flex - direction: column;
+  justify - content: space - between;
+  align - items: center;
+  text - align: center;
+  height: calc(100vh - ${totalVMargin + 10}mm);
+page -break-after: always;
+overflow: hidden;
     }
 
-    .title-content {
-      padding-top: 8vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 80%;
-    }
+    .title - content {
+  padding - top: 8vh;
+  display: flex;
+  flex - direction: column;
+  align - items: center;
+  width: 100 %;
+  max - width: 80 %;
+}
 
-    .book-title {
-      font-family: var(--font-heading);
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 0.2em;
-      color: var(--primary-color);
-      letter-spacing: -0.02em;
-    }
+    .book - title {
+  font - family: var(--font - heading);
+  font - size: 3.5rem;
+  font - weight: 800;
+  line - height: 1.1;
+  margin - bottom: 0.2em;
+  color: var(--primary - color);
+  letter - spacing: -0.02em;
+}
 
-    .book-subtitle {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--muted-color);
-      margin-top: 0;
-    }
+    .book - subtitle {
+  font - family: var(--font - heading);
+  font - size: 1.2rem;
+  font - weight: 400;
+  color: var(--muted - color);
+  margin - top: 0;
+}
 
-    .book-author {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 3rem;
-    }
+    .book - author {
+  font - family: var(--font - heading);
+  font - size: 1.2rem;
+  font - weight: 500;
+  text - transform: uppercase;
+  letter - spacing: 0.1em;
+  margin - top: 3rem;
+}
 
-    .copyright-footer {
-      font-size: 0.9rem;
-      color: var(--muted-color);
-      margin-bottom: 2em;
-      text-align: center;
-    }
+    .copyright - footer {
+  font - size: 0.9rem;
+  color: var(--muted - color);
+  margin - bottom: 2em;
+  text - align: center;
+}
 
-    .copyright-footer p {
-      margin-bottom: 0.5em;
-      text-align: center;
-    }
+    .copyright - footer p {
+  margin - bottom: 0.5em;
+  text - align: center;
+}
 
-    /* Headings */
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      margin-top: 2em;
-      margin-bottom: 0.8em;
-      line-height: 1.25;
-      page-break-after: avoid;
-    }
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font - family: var(--font - heading);
+  font - weight: 700;
+  margin - top: 2em;
+  margin - bottom: 0.8em;
+  line - height: 1.25;
+  page -break-after: avoid;
+}
 
     h1 {
-      font-size: 2.2rem;
-      border-bottom: 3px solid var(--primary-color);
-      padding-bottom: 0.3em;
-      margin-top: 0;
-      page-break-before: always;
-    }
+  font - size: 2.2rem;
+  border - bottom: 3px solid var(--primary - color);
+  padding - bottom: 0.3em;
+  margin - top: 0;
+  page -break-before: always;
+}
 
-    /* Exceptions for page breaks */
-    h1:first-of-type, .toc h1 { page-break-before: avoid; }
+/* Exceptions for page breaks */
+h1: first - of - type, .toc h1 { page -break-before: avoid; }
 
     h2 {
-      font-size: 1.6rem;
-      color: #333;
-      padding-bottom: 0.2em;
-    }
+  font - size: 1.6rem;
+  color: #333;
+  padding - bottom: 0.2em;
+}
 
-    h3 { font-size: 1.3rem; color: #444; }
+    h3 { font - size: 1.3rem; color: #444; }
 
     /* Paragraphs */
     p {
-      margin-bottom: 1.2em;
-      text-align: justify;
-      hyphens: auto;
-      widows: 2;
-      orphans: 2;
-    }
+  margin - bottom: 1.2em;
+  text - align: justify;
+  hyphens: auto;
+  widows: 2;
+  orphans: 2;
+}
 
     /* IMAGES: Critical fixes */
     img {
-      max-width: 100%;       /* Never exceed page width */
-      height: auto;          /* Maintain aspect ratio */
-      max-height: 85vh;      /* Don't be taller than a page */
-      display: block;
-      margin: 1.5em auto;    /* Center images */
-      page-break-inside: avoid;
-    }
+  max - width: 100 %;       /* Never exceed page width */
+  height: auto;          /* Maintain aspect ratio */
+  max - height: 85vh;      /* Don't be taller than a page */
+  display: block;
+  margin: 1.5em auto;    /* Center images */
+  page -break-inside: avoid;
+}
 
     /* Code Blocks */
     pre {
-      background: #282c34;
-      border-radius: 6px;
-      padding: 1.2rem;
-      margin: 1.5em 0;
-      overflow-x: auto;
-      border: 1px solid #1a1c22;
-      page-break-inside: avoid; /* Try to keep code blocks together */
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
+  background: #282c34;
+  border - radius: 6px;
+  padding: 1.2rem;
+  margin: 1.5em 0;
+  overflow - x: auto;
+  border: 1px solid #1a1c22;
+  page -break-inside: avoid; /* Try to keep code blocks together */
+  box - shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
 
     code {
-      font-family: var(--font-mono);
-      font-size: 0.85em;
-      background: rgba(0,0,0,0.05);
-      padding: 0.2em 0.4em;
-      border-radius: 3px;
-    }
+  font - family: var(--font - mono);
+  font - size: 0.85em;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border - radius: 3px;
+}
 
     pre code {
-      background: transparent;
-      padding: 0;
-      color: #abb2bf;
-      display: block;
-      line-height: 1.45;
-      white-space: pre-wrap;
-    }
+  background: transparent;
+  padding: 0;
+  color: #abb2bf;
+  display: block;
+  line - height: 1.45;
+  white - space: pre - wrap;
+}
 
     /* Syntax Highlighting */
-    .hljs-keyword { color: #c678dd; }
-    .hljs-string { color: #98c379; }
-    .hljs-title { color: #61afef; }
-    .hljs-comment { color: #5c6370; font-style: italic; }
-    .hljs-number { color: #d19a66; }
-    .hljs-function { color: #61afef; }
+    .hljs - keyword { color: #c678dd; }
+    .hljs - string { color: #98c379; }
+    .hljs - title { color: #61afef; }
+    .hljs - comment { color: #5c6370; font - style: italic; }
+    .hljs - number { color: #d19a66; }
+    .hljs - function { color: #61afef; }
 
     /* Admonitions */
     blockquote {
-      background: #f8f9fa;
-      border-left: 4px solid var(--primary-color);
-      margin: 1.5em 0;
-      padding: 1rem 1.2rem;
-      border-radius: 0 4px 4px 0;
-      font-style: italic;
-      color: #555;
-      page-break-inside: avoid;
-    }
+  background: #f8f9fa;
+  border - left: 4px solid var(--primary - color);
+  margin: 1.5em 0;
+  padding: 1rem 1.2rem;
+  border - radius: 0 4px 4px 0;
+  font - style: italic;
+  color: #555;
+  page -break-inside: avoid;
+}
 
     /* Tables */
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 2em 0;
-      page-break-inside: avoid;
-      font-size: 0.95em;
-    }
+  width: 100 %;
+  border - collapse: collapse;
+  margin: 2em 0;
+  page -break-inside: avoid;
+  font - size: 0.95em;
+}
 
     th {
-      background: #f1f3f5;
-      font-family: var(--font-heading);
-      text-align: left;
-      font-weight: 600;
-      color: #495057;
-      border-bottom: 2px solid #ccc;
-      padding: 0.8rem;
-    }
+  background: #f1f3f5;
+  font - family: var(--font - heading);
+  text - align: left;
+  font - weight: 600;
+  color: #495057;
+  border - bottom: 2px solid #ccc;
+  padding: 0.8rem;
+}
 
     td {
-      padding: 0.8rem;
-      border-bottom: 1px solid var(--border-color);
-    }
+  padding: 0.8rem;
+  border - bottom: 1px solid var(--border - color);
+}
 
-    tr:nth-child(even) { background: #fafbfc; }
+tr: nth - child(even) { background: #fafbfc; }
 
     /* TOC */
-    .toc { page-break-after: always; }
-    .toc-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5em;
-      border-bottom: 1px dotted #ccc;
-      align-items: baseline;
-    }
-    .toc-title { background: white; padding-right: 0.5em; }
-    .toc-page { background: white; padding-left: 0.5em; font-weight: bold; }
+    .toc { page -break-after: always; }
+    .toc - item {
+  display: flex;
+  justify - content: space - between;
+  margin - bottom: 0.5em;
+  border - bottom: 1px dotted #ccc;
+  align - items: baseline;
+}
+    .toc - title { background: white; padding - right: 0.5em; }
+    .toc - page { background: white; padding - left: 0.5em; font - weight: bold; }
 
-    @media print {
+@media print {
       body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-    }
-  </style>
-</head>
-<body>
+    -webkit - print - color - adjust: exact;
+    print - color - adjust: exact;
+  }
+}
+</style>
+  </head>
+  <body>
   ${coverPage}
   ${titlePage}
   ${tocPlaceholder}
-  <div class="content">
-    ${htmlContent}
-  </div>
+<div class="content" >
+  ${htmlContent}
+</div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Dynamic TOC generation
-      const tocContainer = document.getElementById('toc-placeholder');
-      if (tocContainer) {
-        let tocHTML = '<div class="page toc"><h1>Table of Contents</h1><div class="toc-list">';
-        // Select headers
-        const headers = Array.from(document.querySelectorAll('.content h1, .content h2'));
+document.addEventListener('DOMContentLoaded', function () {
+  // Dynamic TOC generation
+  const tocContainer = document.getElementById('toc-placeholder');
+  if (tocContainer) {
+    let tocHTML = '<div class="page toc"><h1>Table of Contents</h1><div class="toc-list">';
+    // Select headers
+    const headers = Array.from(document.querySelectorAll('.content h1, .content h2'));
 
-        headers.forEach((header, index) => {
-          const level = header.tagName.toLowerCase();
-          // Ensure every header has an ID
-          if (!header.id) {
-            header.id = 'chapter-' + index;
-          }
-          const id = header.id;
+    headers.forEach((header, index) => {
+      const level = header.tagName.toLowerCase();
+      // Ensure every header has an ID
+      if (!header.id) {
+        header.id = 'chapter-' + index;
+      }
+      const id = header.id;
 
-          tocHTML += \`
+      tocHTML += \`
             <div class="toc-item toc-level-\${level}" style="margin-left: \${level === 'h2' ? '1.5em' : '0'}">
               <span class="toc-title"><a href="#\${id}" style="color: inherit; text-decoration: none;">\${header.textContent}</a></span>
               <span class="toc-spacer"></span>
