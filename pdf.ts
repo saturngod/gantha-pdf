@@ -168,14 +168,13 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
   const totalVMargin = (config.margin_top || 30) + (config.margin_bottom || 30);
 
   // Book header sections
-  // Book header sections
   let coverPage = "";
   if (config.cover) {
     // Full page cover image
     coverPage = `
-    < div class="page cover-page full-bleed" >
+    <div class="page cover-page full-bleed">
       <img src="${config.cover}" class="cover-image-full" />
-        </div>
+    </div>
           `;
   }
 
@@ -183,16 +182,16 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
   let titlePage = "";
   if (config.title) {
     titlePage = `
-        < div class="page title-page" >
-          <div class="title-content" >
-            <h1 class="book-title" > ${config.title} </h1>
+        <div class="page title-page">
+          <div class="title-content">
+            <h1 class="book-title">${config.title}</h1>
           ${config.subtitle ? `<h2 class="book-subtitle">${config.subtitle}</h2>` : ""}
-  <div class="book-author" > ${config.author || ""} </div>
+  <div class="book-author">${config.author || ""}</div>
     </div>
 
-    < div class="copyright-footer" >
-      <p>& copy; ${new Date().getFullYear()} ${config.author || ""}. All rights reserved.</p>
-        < p > www.saturngod.net </p>
+    <div class="copyright-footer">
+      <p>&copy; ${new Date().getFullYear()} ${config.author || ""}. All rights reserved.</p>
+        <p>www.saturngod.net</p>
         </div>
         </div>
           `;
@@ -203,24 +202,24 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
     : "";
 
   return `
-        < !DOCTYPE html >
-          <html lang="en" >
+        <!DOCTYPE html>
+          <html lang="en">
             <head>
-            <meta charset="UTF-8" >
-              <title>${config.title || "Book"} </title>
+            <meta charset="UTF-8">
+              <title>${config.title || "Book"}</title>
   ${basePath ? `<base href="file://${basePath}/">` : ''}
-  <link rel="preconnect" href = "https://fonts.googleapis.com" >
-    <link rel="preconnect" href = "https://fonts.gstatic.com" crossorigin >
-      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel = "stylesheet" >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
         <style>
     :root {
-    --primary - color: ${primaryColor};
-    --text - color: #1a1a1a;
-    --muted - color: #666;
-    --border - color: #eaeaea;
-    --font - body: ${fontFamily}, 'Noto Sans Myanmar', serif;
-    --font - heading: ${headingFont}, 'Noto Sans Myanmar', sans - serif;
-    --font - mono: ${monoFont};
+    --primary-color: ${primaryColor};
+    --text-color: #1a1a1a;
+    --muted-color: #666;
+    --border-color: #eaeaea;
+    --font-body: ${fontFamily}, 'Noto Sans Myanmar', serif;
+    --font-heading: ${headingFont}, 'Noto Sans Myanmar', sans-serif;
+    --font-mono: ${monoFont};
   }
 
   /*
@@ -230,10 +229,10 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
   */
   @page {
     size: ${config.page_size || "A4"} ${config.orientation === "L" ? "landscape" : "portrait"};
-    margin - top: ${config.margin_top || 30} mm;
-    margin - right: ${config.margin_right || 25} mm;
-    margin - bottom: ${config.margin_bottom || 30} mm;
-    margin - left: ${config.margin_left || 30} mm;
+    margin-top: ${config.margin_top || 30}mm;
+    margin-right: ${config.margin_right || 25}mm;
+    margin-bottom: ${config.margin_bottom || 30}mm;
+    margin-left: ${config.margin_left || 30}mm;
   }
 
   /* Named page for Cover to allow full bleed (no margins) */
@@ -241,135 +240,135 @@ function markdownToHTML(markdown: string, config: BookConfig, basePath?: string)
     margin: 0;
   }
 
-    * { box- sizing: border - box;
+    * { box-sizing: border-box;
 }
 
     body {
-  font - family: var(--font - body);
-  font - size: ${fontSize} pt;
-  line - height: ${lineHeight};
-  color: var(--text - color);
+  font-family: var(--font-body);
+  font-size: ${fontSize}pt;
+  line-height: ${lineHeight};
+  color: var(--text-color);
   margin: 0;
   padding: 0;
-  -webkit - font - smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
     /* Content wrapper */
     .content {
-  width: 100 %;
+  width: 100%;
 }
 
     /* Cover Page Styling */
-    .cover - page {
+    .cover-page {
   page: cover; /* Use the named page style */
   display: flex;
-  justify - content: center;
-  align - items: center;
-  width: 100 %;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 100vh;
-  page -break-after: always;
+  page-break-after: always;
   overflow: hidden;
 }
 
-    .cover - image - full {
-  width: 100 %;
-  height: 100 %;
-  object - fit: contain;
+    .cover-image-full {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
     /* Title Page (Combined Title + Copyright) */
-    .title - page {
+    .title-page {
   display: flex;
-  flex - direction: column;
-  justify - content: space - between;
-  align - items: center;
-  text - align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
   height: calc(100vh - ${totalVMargin + 10}mm);
-page -break-after: always;
-overflow: hidden;
+  page-break-after: always;
+  overflow: hidden;
     }
 
-    .title - content {
-  padding - top: 8vh;
+    .title-content {
+  padding-top: 8vh;
   display: flex;
-  flex - direction: column;
-  align - items: center;
-  width: 100 %;
-  max - width: 80 %;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 80%;
 }
 
-    .book - title {
-  font - family: var(--font - heading);
-  font - size: 3.5rem;
-  font - weight: 800;
-  line - height: 1.1;
-  margin - bottom: 0.2em;
-  color: var(--primary - color);
-  letter - spacing: -0.02em;
+    .book-title {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 0.2em;
+  color: var(--primary-color);
+  letter-spacing: -0.02em;
 }
 
-    .book - subtitle {
-  font - family: var(--font - heading);
-  font - size: 1.2rem;
-  font - weight: 400;
-  color: var(--muted - color);
-  margin - top: 0;
+    .book-subtitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--muted-color);
+  margin-top: 0;
 }
 
-    .book - author {
-  font - family: var(--font - heading);
-  font - size: 1.2rem;
-  font - weight: 500;
-  text - transform: uppercase;
-  letter - spacing: 0.1em;
-  margin - top: 3rem;
+    .book-author {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 3rem;
 }
 
-    .copyright - footer {
-  font - size: 0.9rem;
-  color: var(--muted - color);
-  margin - bottom: 2em;
-  text - align: center;
+    .copyright-footer {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  margin-bottom: 2em;
+  text-align: center;
 }
 
-    .copyright - footer p {
-  margin - bottom: 0.5em;
-  text - align: center;
+    .copyright-footer p {
+  margin-bottom: 0.5em;
+  text-align: center;
 }
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  font - family: var(--font - heading);
-  font - weight: 700;
-  margin - top: 2em;
-  margin - bottom: 0.8em;
-  line - height: 1.25;
-  page -break-after: avoid;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.8em;
+  line-height: 1.25;
+  page-break-after: avoid;
 }
 
     h1 {
-  font - size: 2.2rem;
-  border - bottom: 3px solid var(--primary - color);
-  padding - bottom: 0.3em;
-  margin - top: 0;
-  page -break-before: always;
+  font-size: 2.2rem;
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 0.3em;
+  margin-top: 0;
+  page-break-before: always;
 }
 
 /* Exceptions for page breaks */
-h1: first - of - type, .toc h1 { page -break-before: avoid; }
+h1:first-of-type, .toc h1 { page-break-before: avoid; }
 
     h2 {
-  font - size: 1.6rem;
+  font-size: 1.6rem;
   color: #333;
-  padding - bottom: 0.2em;
+  padding-bottom: 0.2em;
 }
 
-    h3 { font - size: 1.3rem; color: #444; }
+    h3 { font-size: 1.3rem; color: #444; }
 
     /* Paragraphs */
     p {
-  margin - bottom: 1.2em;
-  text - align: justify;
+  margin-bottom: 1.2em;
+  text-align: justify;
   hyphens: auto;
   widows: 2;
   orphans: 2;
@@ -377,32 +376,32 @@ h1: first - of - type, .toc h1 { page -break-before: avoid; }
 
     /* IMAGES: Critical fixes */
     img {
-  max - width: 100 %;       /* Never exceed page width */
+  max-width: 100%;       /* Never exceed page width */
   height: auto;          /* Maintain aspect ratio */
-  max - height: 85vh;      /* Don't be taller than a page */
+  max-height: 85vh;      /* Don't be taller than a page */
   display: block;
   margin: 1.5em auto;    /* Center images */
-  page -break-inside: avoid;
+  page-break-inside: avoid;
 }
 
     /* Code Blocks */
     pre {
   background: #282c34;
-  border - radius: 6px;
+  border-radius: 6px;
   padding: 1.2rem;
   margin: 1.5em 0;
-  overflow - x: auto;
+  overflow-x: auto;
   border: 1px solid #1a1c22;
-  page -break-inside: avoid; /* Try to keep code blocks together */
-  box - shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  page-break-inside: avoid; /* Try to keep code blocks together */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
     code {
-  font - family: var(--font - mono);
-  font - size: 0.85em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
   background: rgba(0, 0, 0, 0.05);
   padding: 0.2em 0.4em;
-  border - radius: 3px;
+  border-radius: 3px;
 }
 
     pre code {
@@ -410,72 +409,72 @@ h1: first - of - type, .toc h1 { page -break-before: avoid; }
   padding: 0;
   color: #abb2bf;
   display: block;
-  line - height: 1.45;
-  white - space: pre - wrap;
+  line-height: 1.45;
+  white-space: pre-wrap;
 }
 
     /* Syntax Highlighting */
-    .hljs - keyword { color: #c678dd; }
-    .hljs - string { color: #98c379; }
-    .hljs - title { color: #61afef; }
-    .hljs - comment { color: #5c6370; font - style: italic; }
-    .hljs - number { color: #d19a66; }
-    .hljs - function { color: #61afef; }
+    .hljs-keyword { color: #c678dd; }
+    .hljs-string { color: #98c379; }
+    .hljs-title { color: #61afef; }
+    .hljs-comment { color: #5c6370; font-style: italic; }
+    .hljs-number { color: #d19a66; }
+    .hljs-function { color: #61afef; }
 
     /* Admonitions */
     blockquote {
   background: #f8f9fa;
-  border - left: 4px solid var(--primary - color);
+  border-left: 4px solid var(--primary-color);
   margin: 1.5em 0;
   padding: 1rem 1.2rem;
-  border - radius: 0 4px 4px 0;
-  font - style: italic;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
   color: #555;
-  page -break-inside: avoid;
+  page-break-inside: avoid;
 }
 
     /* Tables */
     table {
-  width: 100 %;
-  border - collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
   margin: 2em 0;
-  page -break-inside: avoid;
-  font - size: 0.95em;
+  page-break-inside: avoid;
+  font-size: 0.95em;
 }
 
     th {
   background: #f1f3f5;
-  font - family: var(--font - heading);
-  text - align: left;
-  font - weight: 600;
+  font-family: var(--font-heading);
+  text-align: left;
+  font-weight: 600;
   color: #495057;
-  border - bottom: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
   padding: 0.8rem;
 }
 
     td {
   padding: 0.8rem;
-  border - bottom: 1px solid var(--border - color);
+  border-bottom: 1px solid var(--border-color);
 }
 
-tr: nth - child(even) { background: #fafbfc; }
+tr:nth-child(even) { background: #fafbfc; }
 
     /* TOC */
-    .toc { page -break-after: always; }
-    .toc - item {
+    .toc { page-break-after: always; }
+    .toc-item {
   display: flex;
-  justify - content: space - between;
-  margin - bottom: 0.5em;
-  border - bottom: 1px dotted #ccc;
-  align - items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+  border-bottom: 1px dotted #ccc;
+  align-items: baseline;
 }
-    .toc - title { background: white; padding - right: 0.5em; }
-    .toc - page { background: white; padding - left: 0.5em; font - weight: bold; }
+    .toc-title { background: white; padding-right: 0.5em; }
+    .toc-page { background: white; padding-left: 0.5em; font-weight: bold; }
 
 @media print {
       body {
-    -webkit - print - color - adjust: exact;
-    print - color - adjust: exact;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 </style>
@@ -484,7 +483,7 @@ tr: nth - child(even) { background: #fafbfc; }
   ${coverPage}
   ${titlePage}
   ${tocPlaceholder}
-<div class="content" >
+<div class="content">
   ${htmlContent}
 </div>
 
