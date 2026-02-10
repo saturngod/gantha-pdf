@@ -142,7 +142,7 @@ function convertPlaceholders(
 }
 
 // Convert markdown to HTML with professional book styling
-function markdownToHTML(markdown: string, config: BookConfig): string {
+function markdownToHTML(markdown: string, config: BookConfig, basePath?: string): string {
   // Parse markdown
   let htmlContent = marked.parse(markdown) as string;
 
@@ -197,6 +197,7 @@ function markdownToHTML(markdown: string, config: BookConfig): string {
 <head>
   <meta charset="UTF-8">
   <title>${config.title || "Book"}</title>
+  ${basePath ? `<base href="file://${basePath}/">` : ''}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500&family=Noto+Sans+Myanmar:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -604,7 +605,8 @@ export default {
         }
         // Convert to HTML
         console.log("Converting combined markdown to HTML...");
-        const html = markdownToHTML(combinedMarkdown, config);
+        // Pass mdDir as base path for images
+        const html = markdownToHTML(combinedMarkdown, config, mdDir);
 
         // Launch Puppeteer
         const browser = await puppeteer.launch({
