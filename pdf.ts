@@ -590,6 +590,9 @@ export default {
 
         for (let i = 0; i < bookData.chapters.length; i++) {
           const chapter = bookData.chapters[i];
+          if (chapter.file === "cover.md" || chapter.file.endsWith("/cover.md")) {
+            continue;
+          }
           const chapterPath = join(mdDir, chapter.file);
           try {
             const chapterContent = await readFile(chapterPath, "utf-8");

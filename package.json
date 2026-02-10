@@ -1,6 +1,6 @@
 {
   "name": "gantha-pdf",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "PDF generation plugin for Gantha ebook builder",
   "type": "module",
   "main": "pdf.ts",
